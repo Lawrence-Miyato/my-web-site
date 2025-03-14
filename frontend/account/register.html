@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../css/register.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Register</h2>
+        <form action="/register" method="post" onsubmit="register(event)">
+            <input type="text" id="username" placeholder="Username" required autofocus>
+            <input type="password" id="password" placeholder="password" required autocomplete="off">
+            <input type="password" id="confirm-Password" placeholder="confirm Password" required autocomplete="off">
+            <button type="submit">Register</button>
+        </form>
+        <button type="button" onclick="window.location.href='/login'">Login</button>
+    </div>
+</body>
+<script>
+    const register = async (event) => {
+        event.preventDefault()
+        const username = document.querySelector('#username').value
+        const password = document.querySelector('#password').value
+        const confirmPassword = document.querySelector('#confirm-Password').value
+
+        if (password !== confirmPassword) {
+            alert('Password and Confirm Password do not match')
+            return
+        }
+
+        const res = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password, confirmPassword, username })
+        })
+
+        const result = await res.json()
+        if (result.ok === true) {
+            alert(result.message)
+            window.location.href = '/'
+        } else {
+            alert(result.message)
+        }
+    }
+</script>
+
+</html>
