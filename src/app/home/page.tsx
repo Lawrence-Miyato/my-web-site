@@ -3,10 +3,11 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import "../globals.css";
 import MyCarousel from "@/app/components/MyCarousel";
+import { useRouter } from "next/navigation";
 export default function HomePage() {
   const [, setCurrentIndex] = useState(0);
   const totalItems = 3; // số lượng ảnh carousel
-
+  const router = useRouter();
   const moveSlide = (step: number) => {
     setCurrentIndex(
       (prevIndex) => (prevIndex + step + totalItems) % totalItems
@@ -83,7 +84,8 @@ export default function HomePage() {
               return (
                 <div
                   key={item.id}
-                  className="bg-white p-4 rounded-lg shadow text-center relative text-black"
+                  className="cursor-pointer bg-white p-4 rounded-lg shadow text-center relative text-black hover:shadow-xl transition"
+                  onClick={() => router.push(`/product/${item.id}`)}
                 >
                   {item.discount && (
                     <span className="absolute top-2 left-2 bg-red-600 text-white text-xs px-2 py-1 rounded">
