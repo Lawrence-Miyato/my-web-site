@@ -3,9 +3,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import "../globals.css";
 import MyCarousel from "@/app/components/MyCarousel";
-import Login_Buton from "@/app/components/login"
 export default function HomePage() {
-  const [,setCurrentIndex] = useState(0);
+  const [, setCurrentIndex] = useState(0);
   const totalItems = 3; // số lượng ảnh carousel
 
   const moveSlide = (step: number) => {
@@ -62,102 +61,6 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen flex flex-col bg-[#f4f9fc] font-sans text-center">
-      <header className="bg-blue-600 text-white flex justify-around items-center p-3">
-        <div>
-          <Image
-            src="/logo.png"
-            alt="Logo Shop Cầu Lông"
-            width={50}
-            height={50}
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <select className="p-1 rounded border border-double border-black bg-white text-black">
-            <option className="text-black">Tất cả</option>
-            <option className="text-black">Vợt Cầu Lông</option>
-          </select>
-
-          <div className="bg-lime-300 p-2 rounded-full w-full max-w-xl mx-auto">
-            <div className="flex items-center bg-white rounded-full shadow px-4 py-2">
-              <input
-                type="text"
-                placeholder="Tìm sản phẩm ..."
-                className="flex-grow bg-transparent outline-none text-gray-700"
-              />
-              <button>
-                <svg
-                  className="w-5 h-5 text-black hover:text-blue-500 transition"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-                  />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="text-xs leading-5">
-          <div>Mua bán lẻ: 079 778 8882</div>
-          <div>Mua bán sỉ: 0906 923 883</div>
-          <div>Chăm sóc KH: 077 685 6666</div>
-        </div>
-        <div className="flex gap-3">
-          <Login_Buton/>
-          <a href="#">
-            <Image src="cart-1.svg" alt="Cart" width={32} height={32} />
-          </a>
-        </div>
-      </header>
-
-      <nav className="bg-blue-800 text-white flex justify-center gap-4 py-3">
-        <div className="relative group">
-          <div className="relative group z-50">
-            <a href="#" className="font-bold">
-              ☰ Danh mục sản phẩm
-            </a>
-            <div className="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg min-w-[200px] z-50">
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-                Vợt cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-                Giày cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-                Áo cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-                Quần cầu lông
-              </a>
-            </div>
-          </div>
-        </div>
-        <a href="#" className="font-bold">
-          KHUYẾN MÃI
-        </a>
-        <a href="#" className="font-bold">
-          ƯU ĐÃI
-        </a>
-        <a href="#" className="font-bold">
-          THƯƠNG HIỆU
-        </a>
-        <a href="#" className="font-bold">
-          TIN TỨC
-        </a>
-        <a href="#" className="font-bold">
-          HƯỚNG DẪN
-        </a>
-        <a href="#" className="font-bold">
-          HỆ THỐNG CỬA HÀNG
-        </a>
-      </nav>
-
       <div className="max-w-6xl mx-auto p-5">
         <section className="mb-10">
           <h2 className="text-2xl font-bold text-blue-800 mb-4">
