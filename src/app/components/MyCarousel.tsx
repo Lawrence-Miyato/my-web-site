@@ -4,8 +4,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState, useRef, JSX } from "react";
@@ -21,11 +19,10 @@ export default function MyCarousel(): JSX.Element {
   const [current, setCurrent] = useState<number>(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Auto chuyển slide
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setCurrent((prev) => (prev + 1) % images.length);
-    }, 10000); //10 giây, đơn vị này là milliseconds, 1 miliseconds là 1 giây
+    }, 10000);
 
     return () => {
       if (intervalRef.current) {
@@ -43,35 +40,49 @@ export default function MyCarousel(): JSX.Element {
   };
 
   return (
-    <Carousel className="w-full max-w-xs mx-auto">
-      <CarouselContent
-        style={{
-          transform: `translateX(-${current * 100}%)`,
-          transition: "transform 0.5s ease-in-out",
-          display: "flex",
-        }}
-      >
-        {images.map((src: string, index: number) => (
-          <CarouselItem key={index} className="basis-full">
-            <div className="p-1">
-              <Card>
-                <CardContent className="p-0 overflow-hidden rounded-xl">
-                  <Image
-                    src={src}
-                    alt={`Slide ${index + 1}`}
-                    className="w-full h-full object-cover aspect-square"
-                    width={400}
-                    height={300}
-                  />
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
+    <Carousel className="w-full max-w-4xl mx-auto relative z-10">
+      <div className="overflow-hidden relative">
+        <CarouselContent
+          className="flex transition-transform ease-in-out duration-500"
+          style={{
+            transform: `translateX(-${current * 100}%)`,
+          }}
+        >
+          {images.map((src, index) => (
+            <CarouselItem key={index} className="basis-full shrink-0 grow-0">
+              <div className="p-1">
+                <Card>
+                  <CardContent className="p-0 overflow-hidden rounded-xl">
+                    <Image
+                      src={src}
+                      alt={`Slide ${index + 1}`}
+                      className="w-full h-[400px] object-contain"
+                      width={800}
+                      height={800}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
 
-      <CarouselPrevious onClick={goToPrevious} />
-      <CarouselNext onClick={goToNext} />
+        {/* Nút Prev */}
+        <button
+          onClick={goToPrevious}
+          className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full z-50 shadow"
+        >
+          ◀
+        </button>
+
+        {/* Nút Next */}
+        <button
+          onClick={goToNext}
+          className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full z-50 shadow"
+        >
+          ▶
+        </button>
+      </div>
     </Carousel>
   );
 }

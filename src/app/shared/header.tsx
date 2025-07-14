@@ -1,15 +1,43 @@
-// src/components/layout/Header.tsx
 "use client";
 
 import Image from "next/image";
-import Login_Buton from "@/app/components/login"; // Điều chỉnh nếu path khác
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import Login_Buton from "@/app/components/login";
+import { useEffect, useState } from "react";
+
+interface CartItem {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  quantity: number;
+}
 
 export default function Header() {
-  const contactList = [
-    { label: "Mua bán lẻ", phone: "079 778 8882" },
-    { label: "Mua bán sỉ", phone: "0906 923 883" },
-    { label: "Chăm sóc KH", phone: "077 685 6666" },
-  ];
+  const [cartCount, setCartCount] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true); // Tránh hydration mismatch
+
+    const updateCartCount = () => {
+      const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") || "[]");
+      const totalQuantity = cart.reduce(
+        (sum: number, item: CartItem) => sum + item.quantity,
+        0
+      );
+      setCartCount(totalQuantity);
+    };
+
+    updateCartCount(); // lần đầu khi mount
+    window.addEventListener("cartUpdated", updateCartCount);
+
+    return () => {
+      window.removeEventListener("cartUpdated", updateCartCount);
+    };
+  }, []);
+
   return (
     <div>
       <header className="bg-blue-600 text-white flex justify-around items-center py-2">
@@ -17,8 +45,8 @@ export default function Header() {
           <Image
             src="/picture/logo.png"
             alt="Logo Shop Cầu Lông"
-            width={80}
-            height={80}
+            width={100}
+            height={100}
           />
         </div>
 
@@ -55,56 +83,70 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="text-xs leading-5">
-          {contactList.map((item, index) => (
-            <div key={index}>
-              {item.label}: {item.phone}
-            </div>
-          ))}
-        </div>
-
         <div className="flex gap-3">
           <Login_Buton />
-          <a href="#">
-            <Image src="/cart-1.svg" alt="Cart" width={28} height={28} />
-          </a>
+          <div className="relative">
+            <Link href="/cart">
+              <Image src="/cart-1.svg" alt="Cart" width={28} height={28} />
+              {mounted && cartCount > 0 && (
+                <div className="absolute -top-2 -right-2">
+                  <Badge className="bg-red-600 text-white text-xs px-2 py-0.5 rounded-full">
+                    {cartCount}
+                  </Badge>
+                </div>
+              )}
+            </Link>
+          </div>
         </div>
-        
       </header>
+
       <nav className="bg-blue-800 text-white flex justify-center gap-4 py-3">
         <div className="relative group">
           <div className="relative group z-50">
-            <a href="#" className="font-bold">
+            <span className="font-bold block px-4 py-2 cursor-pointer">
               ☰ Danh mục sản phẩm
-            </a>
-            <div className="absolute hidden group-hover:block bg-white text-black mt-2 rounded shadow-lg min-w-[200px] z-50">
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
+            </span>
+            <div className="absolute top-full left-0 hidden group-hover:flex flex-col bg-white text-black rounded shadow-lg min-w-[200px] z-50">
+              <Link
+                href="/product/badminton-racket"
+                className="block px-4 py-2 hover:bg-gray-200"
+              >
                 Vợt cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
+              </Link>
+              <Link
+                href="/product/badminton-shoes"
+                className="block px-4 py-2 hover:bg-gray-200"
+              >
                 Giày cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
+              </Link>
+              <Link
+                href="/product/badminton-shirt"
+                className="block px-4 py-2 hover:bg-gray-200"
+              >
                 Áo cầu lông
-              </a>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-200">
-                Quần cầu lông
-              </a>
+              </Link>
+              <Link
+                href="/product/badminton-short"
+                className="block px-4 py-2 hover:bg-gray-200"
+              >
+                Quần / Váy cầu lông
+              </Link>
             </div>
           </div>
         </div>
-        <a href="#" className="font-bold">
+
+        <Link href="#" className="font-bold">
           KHUYẾN MÃI
-        </a>
-        <a href="#" className="font-bold">
+        </Link>
+        <Link href="#" className="font-bold">
           ƯU ĐÃI
-        </a>
-        <a href="/instruct" className="font-bold">
+        </Link>
+        <Link href="/instruct" className="font-bold">
           HƯỚNG DẪN
-        </a>
-        <a href="#" className="font-bold">
+        </Link>
+        <Link href="#" className="font-bold">
           HỆ THỐNG CỬA HÀNG
-        </a>
+        </Link>
       </nav>
     </div>
   );
