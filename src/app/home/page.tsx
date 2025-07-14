@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import "../globals.css";
 import MyCarousel from "@/app/components/MyCarousel";
 import { useRouter } from "next/navigation";
+import { products } from "@/lib/data/product";
 export default function HomePage() {
   const [, setCurrentIndex] = useState(0);
   const totalItems = 3; // số lượng ảnh carousel
@@ -13,45 +14,6 @@ export default function HomePage() {
       (prevIndex) => (prevIndex + step + totalItems) % totalItems
     );
   };
-
-  interface Product {
-    id: number;
-    name: string;
-    image: string;
-    oldPrice: number | null;
-    discount: string | null; // kiểu "-5%"
-  }
-
-  const fakeProducts: Product[] = [
-    {
-      id: 1,
-      name: "Vợt Yonex Astrox Lite",
-      image: "/picture/vot2.png",
-      oldPrice: 750000,
-      discount: "-5%",
-    },
-    {
-      id: 2,
-      name: "Vợt Victor Ryuga 2 Pro",
-      image: "/picture/vot3.png",
-      oldPrice: 3690000,
-      discount: null,
-    },
-    {
-      id: 3,
-      name: "Vợt Victor AuraSpeed",
-      image: "/picture/vot4.png",
-      oldPrice: 4500000,
-      discount: null,
-    },
-    {
-      id: 4,
-      name: "Vợt Mizuno JPX 10.3",
-      image: "/picture/vot5.png",
-      oldPrice: 3700000,
-      discount: null,
-    },
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -71,7 +33,7 @@ export default function HomePage() {
             </a>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {fakeProducts.map((item) => {
+            {products.map((item) => {
               const discountPercent = item.discount
                 ? parseFloat(item.discount.replace("%", "").replace("-", "")) /
                   100
@@ -79,7 +41,7 @@ export default function HomePage() {
 
               const price = item.oldPrice
                 ? Math.round(item.oldPrice * (1 - discountPercent))
-                : null;
+                : item.price; // fallback nếu không có oldPrice
 
               return (
                 <div

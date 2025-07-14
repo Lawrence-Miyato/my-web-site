@@ -12,7 +12,47 @@ interface CartItem {
 
 export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [mounted, setMounted] = useState(false); // 🔥 Dùng để tránh ghi đè cart rỗng
+  const [mounted, setMounted] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  const increaseQuantity = (id: number) => {
+    const updatedCart = cart.map((item) =>
+      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+    );
+    setCart(updatedCart);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      const updatedCart = cart.filter((item) => item.id !== deleteId);
+      setCart(updatedCart);
+    }
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
+
+  const decreaseQuantity = (id: number) => {
+    const item = cart.find((item) => item.id === id);
+    if (!item) return;
+
+    if (item.quantity === 1) {
+      setDeleteId(id);
+      setShowConfirm(true); // 👉 Mở popup
+    } else {
+      const updatedCart = cart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      );
+      setCart(updatedCart);
+    }
+  };
 
   // ✅ Chỉ load cart từ localStorage một lần khi mount
   useEffect(() => {
@@ -28,26 +68,6 @@ export default function CartPage() {
     localStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(new Event("cartUpdated"));
   }, [cart, mounted]);
-
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const increaseQuantity = (id: number) => {
-    const updatedCart = cart.map((item) =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-    );
-    setCart(updatedCart);
-  };
-
-  const decreaseQuantity = (id: number) => {
-    const updatedCart = cart
-      .map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
-          : item
-      )
-      .filter((item) => item.quantity > 0);
-    setCart(updatedCart);
-  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 text-black">
@@ -102,6 +122,29 @@ export default function CartPage() {
             </span>
           </div>
         </>
+      )}
+      {showConfirm && (
+        <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">
+              Bạn có chắc muốn xóa sản phẩm này?
+            </h2>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleCancelDelete}
+                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+              >
+                Hủy
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded"
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
