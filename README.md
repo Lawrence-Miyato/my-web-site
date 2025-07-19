@@ -8,7 +8,7 @@
 
 Mở Terminal và chạy lệnh sau:
 
-````bash
+```bash
 npx create-next-app@latest
 
 Khi chạy lệnh, hệ thống sẽ hỏi một số câu hỏi. Bạn hãy chọn như sau:
@@ -36,15 +36,14 @@ chạy-lệnh npx shadcn-ui@latest add carousel để thêm thư viện carousel
 
 chạy-lệnh npx shadcn@latest add card để thêm thư viện card
 
-
 ---
 
-## 🚀 CÁCH CHẠY WEB
+```
 
-```bash
-npm run dev
+# 🚀 CÁCH CHẠY WEB
 
+    npm run dev
 
+# 🎯 Vị trí lưu Fake Data
 
-
-````
+    src/lib/data/product.tsx
