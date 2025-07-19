@@ -24,21 +24,22 @@ Would you like to use Turbopack for next dev?	No (dành cho người mới)
 Would you like to customize the import alias?	Yes
 What import alias would you like configured?	@/*
 
-Ẩn/Hiện Mật khẩu (Password Toggle) với Heroicons
 
-chạy-lệnh  npm install @heroicons/react
-
-sau-đó-import  import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
-
-Thêm Carousel (slide hình ảnh) với Shadcn UI
-
-chạy-lệnh npx shadcn-ui@latest add carousel để thêm thư viện carousel
-
-chạy-lệnh npx shadcn@latest add card để thêm thư viện card
 
 ---
 
 ```
+# 🚀 Ẩn/Hiện Mật khẩu (Password Toggle) với Heroicons
+
+    chạy-lệnh  npm install @heroicons/react
+
+    sau-đó-import  import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+
+# 🚀 Thêm Carousel (slide hình ảnh) với Shadcn UI
+
+    chạy-lệnh npx shadcn-ui@latest add carousel để thêm thư viện carousel
+
+    chạy-lệnh npx shadcn@latest add card để thêm thư viện card
 
 # 🚀 CÁCH CHẠY WEB
 
