@@ -15,7 +15,9 @@ export default function CartPage() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [mounted, setMounted] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [deleteType, setDeleteType] = useState<"single" | "multi" | null>(null);
 
   const increaseQuantity = (id: number) => {
     const updatedCart = cart.map((item) =>
@@ -30,6 +32,7 @@ export default function CartPage() {
 
     if (item.quantity === 1) {
       setDeleteId(id);
+      setDeleteType("single"); // Đánh dấu là xóa từng item
       setShowConfirm(true);
     } else {
       const updatedCart = cart.map((item) =>
@@ -40,17 +43,21 @@ export default function CartPage() {
   };
 
   const handleConfirmDelete = () => {
-    if (deleteId !== null) {
+    if (deleteType === "single" && deleteId !== null) {
       const updatedCart = cart.filter((item) => item.id !== deleteId);
       setCart(updatedCart);
     }
-    setShowConfirm(false);
-    setDeleteId(null);
-  };
 
-  const handleCancelDelete = () => {
-    setShowConfirm(false);
+    if (deleteType === "multi") {
+      const updatedCart = cart.filter((item) => !selectedIds.includes(item.id));
+      setCart(updatedCart);
+      setSelectedIds([]); // clear sau khi xóa
+    }
+
+    // Reset state sau khi xong
     setDeleteId(null);
+    setDeleteType(null);
+    setShowConfirm(false);
   };
 
   const getDiscountedPrice = (item: CartItem) => {
@@ -81,6 +88,12 @@ export default function CartPage() {
     (a, b) => getFinalPrice(a) * a.quantity - getFinalPrice(b) * b.quantity
   );
 
+  const toggleSelect = (id: number) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
+    );
+  };
+
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(savedCart);
@@ -109,6 +122,12 @@ export default function CartPage() {
                   className="flex justify-between gap-4 items-center border-b pb-4"
                 >
                   <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(item.id)}
+                      onChange={() => toggleSelect(item.id)}
+                      className="w-5 h-5 accent-red-500"
+                    />
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -143,6 +162,20 @@ export default function CartPage() {
                 </div>
               );
             })}
+            {selectedIds.length > 0 && (
+              <div className="text-right mt-4">
+                <button
+                  onClick={() => {
+                    setDeleteType("multi");
+                    setShowConfirm(true);
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-red-600 transition"
+                >
+                  <Image src="/trash.svg" alt="Xóa" width={20} height={20} />
+                  Xóa {selectedIds.length} sản phẩm đã chọn
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="mt-6 text-right text-xl font-bold">
@@ -155,23 +188,31 @@ export default function CartPage() {
       )}
 
       {showConfirm && (
-        <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">
-            <h2 className="text-lg font-semibold mb-4">
-              Bạn có chắc muốn xóa sản phẩm này?
+        <div className="fixed inset-0 bg-black/40 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-[90%] max-w-md text-center">
+            <h2 className="text-lg font-semibold mb-4 text-gray-800">
+              🗑️ Bạn có chắc muốn xóa{" "}
+              {selectedIds.length === 0
+                ? "sản phẩm"
+                : `${selectedIds.length} sản phẩm`}{" "}
+              không?
             </h2>
+
             <div className="flex justify-center gap-4">
               <button
-                onClick={handleCancelDelete}
-                className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded"
+                onClick={() => {
+                  handleConfirmDelete();
+                  setShowConfirm(false);
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               >
-                Hủy
+                Có, xóa
               </button>
               <button
-                onClick={handleConfirmDelete}
-                className="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded"
+                onClick={() => setShowConfirm(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
               >
-                Xóa
+                Hủy
               </button>
             </div>
           </div>

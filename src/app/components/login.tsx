@@ -3,12 +3,18 @@
 import { useState } from "react";
 import Image from "next/image";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import { fakeUsers } from "@/lib/data/product";
+
 export default function UserButton() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ Trạng thái đăng nhập
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [, setMessage] = useState("");
+  const [, setShowToast] = useState(false);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -17,20 +23,51 @@ export default function UserButton() {
     setPassword("");
   };
 
+  const showNotification = (msg: string) => {
+    setMessage(msg);
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000); // auto tắt sau 3s
+  };
+
   const handleLogin = () => {
-    if (email === "admin@123" && password === "123456") {
+    const foundUser = fakeUsers.find(
+      (user) => user.email === email && user.password === password
+    );
+
+    if (foundUser) {
+      setIsLoggedIn(true);
       setIsPopupOpen(false);
-      alert("🎉 Đăng nhập thành công!");
+      showNotification(`🎉 Chào mừng, ${foundUser.name}!`);
     } else {
       setError("❌ Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
     }
   };
 
+  const handleLogout = () => {
+    setShowConfirmLogout(true);
+  };
+
+  const confirmLogout = () => {
+    setIsLoggedIn(false);
+    setShowConfirmLogout(false);
+    showNotification("👋 Đã đăng xuất thành công!");
+  };
+
+  const cancelLogout = () => {
+    setShowConfirmLogout(false);
+  };
+
   return (
     <div>
-      <button onClick={togglePopup}>
-        <Image src="/user-4.svg" alt="Login" width={32} height={32} />
-      </button>
+      {isLoggedIn ? (
+        <button onClick={handleLogout}>
+          <Image src="/logout.svg" alt="Logout" width={32} height={32} />
+        </button>
+      ) : (
+        <button onClick={togglePopup}>
+          <Image src="/user-4.svg" alt="Login" width={32} height={32} />
+        </button>
+      )}
 
       {isPopupOpen && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center">
@@ -97,6 +134,32 @@ export default function UserButton() {
             <p className="text-sm text-center mt-4 text-blue-600 cursor-pointer hover:underline">
               Quên mật khẩu?
             </p>
+          </div>
+        </div>
+      )}
+      {showConfirmLogout && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+
+          <div className="relative z-10 bg-white p-6 rounded-lg shadow-lg max-w-sm w-full text-center">
+            <h2 className="text-lg font-semibold mb-4 text-black">
+              ⚠️ Bạn có chắc muốn đăng xuất?
+            </h2>
+
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={confirmLogout}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Có
+              </button>
+              <button
+                onClick={cancelLogout}
+                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Hủy
+              </button>
+            </div>
           </div>
         </div>
       )}
