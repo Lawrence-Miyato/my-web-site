@@ -45,7 +45,7 @@ export default function CartPage() {
 
     if (item.quantity === 1) {
       setDeleteId(id);
-      setShowConfirm(true); // 👉 Mở popup
+      setShowConfirm(true);
     } else {
       const updatedCart = cart.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity - 1 } : item
@@ -54,16 +54,14 @@ export default function CartPage() {
     }
   };
 
-  // ✅ Chỉ load cart từ localStorage một lần khi mount
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(savedCart);
-    setMounted(true); // Cho phép ghi sau khi đã set cart đúng
+    setMounted(true);
   }, []);
 
-  // ✅ Chỉ ghi localStorage sau khi đã mounted
   useEffect(() => {
-    if (!mounted) return; // 🔥 Nếu chưa mounted, không làm gì cả
+    if (!mounted) return;
 
     localStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(new Event("cartUpdated"));

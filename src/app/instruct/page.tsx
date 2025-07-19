@@ -15,7 +15,6 @@ export default function Page() {
       title: "cách đập cầu cho người mới",
       videoSrc: "/videos/huong-dan-dap-cau.mp4",
     },
-    // Thêm bao nhiêu cũng được nha!
   ];
 
   return (

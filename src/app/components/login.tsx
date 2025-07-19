@@ -12,14 +12,14 @@ export default function UserButton() {
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
-    setError(""); // Reset lỗi mỗi lần mở popup
+    setError("");
     setEmail("");
     setPassword("");
   };
 
   const handleLogin = () => {
     if (email === "admin@123" && password === "123456") {
-      setIsPopupOpen(false); // Đóng popup
+      setIsPopupOpen(false);
       alert("🎉 Đăng nhập thành công!");
     } else {
       setError("❌ Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
@@ -27,22 +27,18 @@ export default function UserButton() {
   };
 
   return (
-    <>
-      {/* Nút avatar */}
+    <div>
       <button onClick={togglePopup}>
         <Image src="/user-4.svg" alt="Login" width={32} height={32} />
       </button>
 
-      {/* Overlay + Modal */}
       {isPopupOpen && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center">
-          {/* Lớp mờ che toàn bộ giao diện */}
           <div
             className="absolute inset-0 bg-black/30 backdrop-blur-sm"
             onClick={togglePopup}
           />
 
-          {/* Popup trắng */}
           <div className="relative z-[1000] bg-white rounded-lg shadow-lg w-full max-w-md p-6">
             <button
               onClick={togglePopup}
@@ -104,6 +100,6 @@ export default function UserButton() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

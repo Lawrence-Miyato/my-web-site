@@ -67,7 +67,6 @@ export default function MyCarousel(): JSX.Element {
           ))}
         </CarouselContent>
 
-        {/* Nút Prev */}
         <button
           onClick={goToPrevious}
           className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full z-50 shadow"
@@ -75,7 +74,6 @@ export default function MyCarousel(): JSX.Element {
           ◀
         </button>
 
-        {/* Nút Next */}
         <button
           onClick={goToNext}
           className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/70 hover:bg-white text-black p-2 rounded-full z-50 shadow"

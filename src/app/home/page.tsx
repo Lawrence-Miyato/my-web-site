@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { products } from "@/lib/data/product";
 export default function HomePage() {
   const [, setCurrentIndex] = useState(0);
-  const totalItems = 3; // số lượng ảnh carousel
+  const totalItems = 3; 
   const router = useRouter();
   const moveSlide = (step: number) => {
     setCurrentIndex(
@@ -41,7 +41,7 @@ export default function HomePage() {
 
               const price = item.oldPrice
                 ? Math.round(item.oldPrice * (1 - discountPercent))
-                : item.price; // fallback nếu không có oldPrice
+                : item.price; 
 
               return (
                 <div

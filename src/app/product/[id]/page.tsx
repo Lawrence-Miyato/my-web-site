@@ -34,7 +34,6 @@ export default function ProductDetail() {
   return (
     <div className="p-10 max-w-5xl mx-auto text-black">
       <div className="flex flex-col md:flex-row gap-10">
-        {/* Trái: Hình ảnh */}
         <div className="w-full md:w-1/2 text-center">
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
           <Image
@@ -46,7 +45,6 @@ export default function ProductDetail() {
           />
         </div>
 
-        {/* Phải: Giá + mô tả + số lượng + giỏ */}
         <div className="w-full md:w-1/2 space-y-4">
           <div className="flex items-center gap-x-3">
             <p className="text-gray-600 line-through">
@@ -59,9 +57,7 @@ export default function ProductDetail() {
 
           <p>{product.describe}</p>
 
-          {/* Số lượng + nút thêm */}
           <div className="flex items-center gap-4 mt-6">
-            {/* Bộ đếm số lượng */}
             <div className="flex border border-gray-300 rounded overflow-hidden">
               <button
                 onClick={decrease}
@@ -80,7 +76,6 @@ export default function ProductDetail() {
               </button>
             </div>
 
-            {/* Nút thêm vào giỏ */}
             <button
               onClick={handleAddToCart}
               className="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-2 rounded"
