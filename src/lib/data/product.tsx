@@ -314,3 +314,36 @@ export const huongDanVideos = [
     videoSrc: "/videos/huong-dan-dap-cau.mp4",
   },
 ];
+
+// 📞 thông tin liên lạc
+export const CONTACT_INFO = {
+  email: "support@badmintonstore.vn",
+  hotline: "0909 123 456",
+  facebook: "fb.com/BadmintonStoreVN",
+};
+
+// tài khoản
+
+export interface FakeUser {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export const fakeUsers: FakeUser[] = [
+  {
+    email: "admin@123",
+    password: "123456",
+    name: "Admin",
+  },
+  {
+    email: "user@demo.com",
+    password: "654321",
+    name: "Demo User",
+  },
+  {
+    email: "test@abc.com",
+    password: "111111",
+    name: "Test Account",
+  },
+];

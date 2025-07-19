@@ -42,12 +42,15 @@ export default function Header() {
     <div>
       <header className="bg-blue-600 text-white flex justify-around items-center py-2">
         <div>
-          <Image
-            src="/picture/logo.png"
-            alt="Logo Shop Cầu Lông"
-            width={100}
-            height={100}
-          />
+          <Link href="/home">
+            <Image
+              src="/picture/logo.png"
+              alt="Logo Shop Cầu Lông"
+              width={100}
+              height={100}
+              className="cursor-pointer"
+            />
+          </Link>
         </div>
 
         <div className="flex items-center gap-2">
@@ -152,7 +155,7 @@ export default function Header() {
           HƯỚNG DẪN
         </Link>
         <Link
-          href="#"
+          href="/system"
           className="font-bold px-4 py-2 flex items-center justify-center h-full"
         >
           HỆ THỐNG CỬA HÀNG

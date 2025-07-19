@@ -12,7 +12,6 @@ export default function ProductDetail() {
   const decrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   const [showPopup, setShowPopup] = useState(false);
 
-  // ✅ Di chuyển kiểm tra product ra ngoài
   if (!product) return <div className="p-10">Không tìm thấy sản phẩm</div>;
 
   const handleAddToCart = () => {
@@ -28,7 +27,7 @@ export default function ProductDetail() {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     window.dispatchEvent(new Event("cartUpdated"));
-    setShowPopup(true); // 👉 bật popup
+    setShowPopup(true);
   };
 
   return (

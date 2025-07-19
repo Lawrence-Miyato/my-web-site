@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { rackets } from "@/lib/data/product";
 export default function HomePage() {
   const [, setCurrentIndex] = useState(0);
-  const totalItems = 3; 
+  const totalItems = 3;
   const router = useRouter();
   const moveSlide = (step: number) => {
     setCurrentIndex(
@@ -33,17 +33,22 @@ export default function HomePage() {
             </a>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {rackets.map((item) => {
-              const discountPercent = item.discount
-                ? parseFloat(item.discount.replace("%", "").replace("-", "")) /
-                  100
-                : 0;
+            {[...rackets]
+              .map((item) => {
+                const discountPercent = item.discount
+                  ? parseFloat(
+                      item.discount.replace("%", "").replace("-", "")
+                    ) / 100
+                  : 0;
 
-              const price = item.oldPrice
-                ? Math.round(item.oldPrice * (1 - discountPercent))
-                : item.oldPrice; 
+                const price = item.oldPrice
+                  ? Math.round(item.oldPrice * (1 - discountPercent))
+                  : item.oldPrice;
 
-              return (
+                return { ...item, price };
+              })
+              .sort((a, b) => (a.price || 0) - (b.price || 0)) // Sắp xếp tăng dần theo giá đã giảm
+              .map((item) => (
                 <div
                   key={item.id}
                   className="cursor-pointer bg-white p-4 rounded-lg shadow text-center relative text-black hover:shadow-xl transition"
@@ -68,11 +73,12 @@ export default function HomePage() {
                     </p>
                   )}
                   <p className="text-red-600 font-bold">
-                    {price ? price.toLocaleString("vi-VN") + " ₫" : "Liên hệ"}
+                    {item.price
+                      ? item.price.toLocaleString("vi-VN") + " ₫"
+                      : "Liên hệ"}
                   </p>
                 </div>
-              );
-            })}
+              ))}
           </div>
         </section>
       </div>
