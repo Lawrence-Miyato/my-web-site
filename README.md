@@ -28,7 +28,7 @@ What import alias would you like configured?	@/*
 
 chạy-lệnh  npm install @heroicons/react
 
-sau-đó-import  import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+sau-đó-import  import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 Thêm Carousel (slide hình ảnh) với Shadcn UI
 
