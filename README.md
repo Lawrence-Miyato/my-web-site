@@ -4,7 +4,7 @@
 
 ---
 
-## 🛠️ Bước 1: Tạo Project Next.js
+## 🛠️ Tạo Project Next.js
 
 Mở Terminal và chạy lệnh sau:
 
