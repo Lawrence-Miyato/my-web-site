@@ -67,6 +67,20 @@ export default function CartPage() {
     return sum + price * item.quantity;
   }, 0);
 
+  const getFinalPrice = (item: CartItem) => {
+    const discountPercent = item.discount
+      ? parseFloat(item.discount.replace("%", "").replace("-", "")) / 100
+      : 0;
+
+    return item.oldPrice
+      ? Math.round(item.oldPrice * (1 - discountPercent))
+      : 0;
+  };
+
+  const sortedCart = [...cart].sort(
+    (a, b) => getFinalPrice(a) * a.quantity - getFinalPrice(b) * b.quantity
+  );
+
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(savedCart);
@@ -88,7 +102,7 @@ export default function CartPage() {
       ) : (
         <>
           <div className="space-y-4">
-            {cart.map((item) => {
+            {sortedCart.map((item) => {
               return (
                 <div
                   key={item.id}
