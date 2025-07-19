@@ -1,22 +1,6 @@
-export default function Page() {
-  const huongDanVideos = [
-    {
-      id: 1,
-      title: "Hướng dẫn kỹ thuật cầu lông",
-      videoSrc: "/videos/huong-dan-co-ban.mp4",
-    },
-    {
-      id: 2,
-      title: "hướng dẫn di chuyển",
-      videoSrc: "/videos/huong-dan-di-chuyen.mp4",
-    },
-    {
-      id: 3,
-      title: "cách đập cầu cho người mới",
-      videoSrc: "/videos/huong-dan-dap-cau.mp4",
-    },
-  ];
+import { huongDanVideos } from "@/lib/data/product"; 
 
+export default function Page() {
   return (
     <div className="space-y-12">
       {huongDanVideos.map((item) => (
