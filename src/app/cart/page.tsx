@@ -2,12 +2,13 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-interface CartItem {
+export interface CartItem {
   id: number;
   name: string;
   image: string;
-  price: number;
   quantity: number;
+  discount?: string | null;
+  oldPrice?: number | null;
 }
 
 export default function CartPage() {
@@ -16,27 +17,11 @@ export default function CartPage() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
   const increaseQuantity = (id: number) => {
     const updatedCart = cart.map((item) =>
       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCart(updatedCart);
-  };
-
-  const handleConfirmDelete = () => {
-    if (deleteId !== null) {
-      const updatedCart = cart.filter((item) => item.id !== deleteId);
-      setCart(updatedCart);
-    }
-    setShowConfirm(false);
-    setDeleteId(null);
-  };
-
-  const handleCancelDelete = () => {
-    setShowConfirm(false);
-    setDeleteId(null);
   };
 
   const decreaseQuantity = (id: number) => {
@@ -53,6 +38,34 @@ export default function CartPage() {
       setCart(updatedCart);
     }
   };
+
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      const updatedCart = cart.filter((item) => item.id !== deleteId);
+      setCart(updatedCart);
+    }
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);
+    setDeleteId(null);
+  };
+
+  const getDiscountedPrice = (item: CartItem) => {
+    const price = item.oldPrice ?? 0;
+    const discountPercent = item.discount
+      ? parseFloat(item.discount.replace("%", "").replace("-", "")) / 100
+      : 0;
+
+    return Math.round(price * (1 - discountPercent));
+  };
+
+  const total = cart.reduce((sum, item) => {
+    const price = getDiscountedPrice(item);
+    return sum + price * item.quantity;
+  }, 0);
 
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -75,42 +88,47 @@ export default function CartPage() {
       ) : (
         <>
           <div className="space-y-4">
-            {cart.map((item) => (
-              <div
-                key={item.id}
-                className="flex justify-between gap-4 items-center border-b pb-4"
-              >
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={80}
-                    height={80}
-                  />
-                  <div>
-                    <h2 className="font-semibold">{item.name}</h2>
-                    <p className="text-red-600 font-bold mt-1">
-                      {(item.price * item.quantity).toLocaleString("vi-VN")} ₫
-                    </p>
+            {cart.map((item) => {
+              return (
+                <div
+                  key={item.id}
+                  className="flex justify-between gap-4 items-center border-b pb-4"
+                >
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={80}
+                      height={80}
+                    />
+                    <div>
+                      <h2 className="font-semibold">{item.name}</h2>
+                      <p className="text-red-600 font-bold mt-1">
+                        {(
+                          getDiscountedPrice(item) * item.quantity
+                        ).toLocaleString("vi-VN")}{" "}
+                        ₫
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => decreaseQuantity(item.id)}
+                      className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                      -
+                    </button>
+                    <span className="font-bold">{item.quantity}</span>
+                    <button
+                      onClick={() => increaseQuantity(item.id)}
+                      className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    -
-                  </button>
-                  <span className="font-bold">{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(item.id)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-6 text-right text-xl font-bold">
@@ -121,6 +139,7 @@ export default function CartPage() {
           </div>
         </>
       )}
+
       {showConfirm && (
         <div className="fixed inset-0 bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-sm w-full">

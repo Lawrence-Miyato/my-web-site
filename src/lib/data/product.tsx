@@ -1,11 +1,8 @@
-// src/lib/data/products.ts
-
 // 👉 Dành cho giỏ hàng
 export interface CartItem {
   id: number;
   name: string;
   image: string;
-  price: number;
   quantity: number;
 }
 
@@ -13,19 +10,18 @@ export interface CartItem {
 export interface Product {
   id: number;
   name: string;
-  image: string;
-  price: number;           // Giá sau khi áp dụng giảm
+  image: string; // Giá sau khi áp dụng giảm
   oldPrice?: number | null;
-  discount?: string | null;  // ví dụ "-5%"
+  discount?: string | null;
   describe?: string;
 }
 
-export const products: Product[] = [
+// 🏸 Vợt cầu lông
+export const rackets: Product[] = [
   {
     id: 1,
     name: "Vợt Yonex Astrox Lite",
     image: "/picture/vot2.png",
-    price: 712500,
     oldPrice: 750000,
     discount: "-5%",
     describe: "Thông tin của vợt",
@@ -34,7 +30,6 @@ export const products: Product[] = [
     id: 2,
     name: "Vợt Victor Ryuga 2 Pro",
     image: "/picture/vot3.png",
-    price: 3690000,
     oldPrice: 3690000,
     discount: null,
     describe: "Vợt siêu cấp cho tay chuyên nghiệp",
@@ -43,7 +38,6 @@ export const products: Product[] = [
     id: 3,
     name: "Vợt Victor AuraSpeed",
     image: "/picture/vot4.png",
-    price: 4500000,
     oldPrice: 4500000,
     discount: null,
     describe: "Cảm giác linh hoạt, tốc độ nhanh",
@@ -52,13 +46,81 @@ export const products: Product[] = [
     id: 4,
     name: "Vợt Mizuno JPX 10.3",
     image: "/picture/vot5.png",
-    price: 3700000,
     oldPrice: 3700000,
     discount: null,
     describe: "Thương hiệu Nhật nổi bật với độ bền",
   },
 ];
 
+// 👟 Giày cầu lông
+export const shoes: Product[] = [
+  {
+    id: 5,
+    name: "Giày Yonex SHB 65Z3",
+    image: "/picture/giay1.png",
+    oldPrice: 1950000,
+    discount: "-5%",
+    describe: "Êm chân, nhẹ, hỗ trợ bật nhảy tốt",
+  },
+  {
+    id: 6,
+    name: "Giày Victor P9200",
+    image: "/picture/giay2.png",
+    oldPrice: 2100000,
+    discount: null,
+    describe: "Cứng cáp, ổn định, dành cho chuyên nghiệp",
+  },
+];
+
+// 👕 Áo cầu lông
+export const shirts: Product[] = [
+  {
+    id: 7,
+    name: "Áo cầu lông Yonex 2024",
+    image: "/picture/ao1.png",
+    oldPrice: 390000,
+    discount: "-10%",
+    describe: "Chất vải thấm hút mồ hôi, co giãn tốt",
+  },
+  {
+    id: 8,
+    name: "Áo Victor nam nữ Unisex",
+    image: "/picture/ao2.png",
+    oldPrice: 320000,
+    discount: null,
+    describe: "Mẫu basic, thoải mái khi vận động",
+  },
+];
+
+// 👖 Quần / Váy cầu lông
+export const shorts: Product[] = [
+  {
+    id: 9,
+    name: "Quần cầu lông Yonex Pro",
+    image: "/picture/quan1.png",
+    oldPrice: 290000,
+    discount: null,
+    describe: "Form slim, nhẹ, thoáng khí",
+  },
+  {
+    id: 10,
+    name: "Váy cầu lông nữ Victor",
+    image: "/picture/vay1.png",
+    oldPrice: 420000,
+    discount: "-12%",
+    describe: "Thiết kế nữ tính, năng động và mát mẻ",
+  },
+];
+
+// 🧃 Gộp tất cả nếu cần render chung
+export const allProducts: Product[] = [
+  ...rackets,
+  ...shoes,
+  ...shirts,
+  ...shorts,
+];
+
+// 📹 Hướng dẫn video
 export const huongDanVideos = [
   {
     id: 1,

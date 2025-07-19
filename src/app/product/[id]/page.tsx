@@ -2,11 +2,11 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
-import { CartItem, products } from "@/lib/data/product";
+import { CartItem, allProducts } from "@/lib/data/product";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const product = products.find((p) => p.id === Number(id));
+  const product = allProducts.find((p) => p.id === Number(id));
   const [quantity, setQuantity] = useState(1);
   const increase = () => setQuantity((prev) => prev + 1);
   const decrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
@@ -47,12 +47,28 @@ export default function ProductDetail() {
 
         <div className="w-full md:w-1/2 space-y-4">
           <div className="flex items-center gap-x-3">
-            <p className="text-gray-600 line-through">
-              {product.oldPrice?.toLocaleString("vi-VN")} ₫
-            </p>
-            <p className="text-red-600 text-2xl font-bold">
-              {product.price?.toLocaleString("vi-VN")} ₫
-            </p>
+            {product.discount ? (
+              <>
+                <p className="text-gray-600 line-through">
+                  {product.oldPrice?.toLocaleString("vi-VN")} ₫
+                </p>
+                <p className="text-red-600 text-2xl font-bold">
+                  {Math.round(
+                    product.oldPrice! *
+                      (1 -
+                        parseFloat(
+                          product.discount.replace("%", "").replace("-", "")
+                        ) /
+                          100)
+                  ).toLocaleString("vi-VN")}{" "}
+                  ₫
+                </p>
+              </>
+            ) : (
+              <p className="text-red-600 text-2xl font-bold">
+                {product.oldPrice?.toLocaleString("vi-VN")} ₫
+              </p>
+            )}
           </div>
 
           <p>{product.describe}</p>

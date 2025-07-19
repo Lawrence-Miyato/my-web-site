@@ -100,51 +100,61 @@ export default function Header() {
         </div>
       </header>
 
-      <nav className="bg-blue-800 text-white flex justify-center gap-4 py-3">
+      <nav className="bg-blue-800 text-white flex justify-center gap-6 py-3 items-center">
         <div className="relative group">
-          <div className="relative group z-50">
-            <span className="font-bold block px-4 py-2 cursor-pointer">
-              ☰ Danh mục sản phẩm
-            </span>
-            <div className="absolute top-full left-0 hidden group-hover:flex flex-col bg-white text-black rounded shadow-lg min-w-[200px] z-50">
-              <Link
-                href="/product/badminton-racket"
-                className="block px-4 py-2 hover:bg-gray-200"
-              >
-                Vợt cầu lông
-              </Link>
-              <Link
-                href="/product/badminton-shoes"
-                className="block px-4 py-2 hover:bg-gray-200"
-              >
-                Giày cầu lông
-              </Link>
-              <Link
-                href="/product/badminton-shirt"
-                className="block px-4 py-2 hover:bg-gray-200"
-              >
-                Áo cầu lông
-              </Link>
-              <Link
-                href="/product/badminton-short"
-                className="block px-4 py-2 hover:bg-gray-200"
-              >
-                Quần / Váy cầu lông
-              </Link>
-            </div>
+          <div className="font-bold px-4 py-2 cursor-pointer flex items-center justify-center h-full">
+            ☰ Danh mục sản phẩm
+          </div>
+          <div className="absolute top-full left-0 hidden group-hover:flex flex-col bg-white text-black rounded shadow-lg min-w-[200px] z-50">
+            <Link
+              href="/product/badminton-racket"
+              className="block px-4 py-2 hover:bg-gray-200"
+            >
+              Vợt cầu lông
+            </Link>
+            <Link
+              href="/product/badminton-shoes"
+              className="block px-4 py-2 hover:bg-gray-200"
+            >
+              Giày cầu lông
+            </Link>
+            <Link
+              href="/product/badminton-shirt"
+              className="block px-4 py-2 hover:bg-gray-200"
+            >
+              Áo cầu lông
+            </Link>
+            <Link
+              href="/product/badminton-short"
+              className="block px-4 py-2 hover:bg-gray-200"
+            >
+              Quần / Váy cầu lông
+            </Link>
           </div>
         </div>
 
-        <Link href="#" className="font-bold">
+        <Link
+          href="#"
+          className="font-bold px-4 py-2 flex items-center justify-center h-full"
+        >
           KHUYẾN MÃI
         </Link>
-        <Link href="#" className="font-bold">
+        <Link
+          href="#"
+          className="font-bold px-4 py-2 flex items-center justify-center h-full"
+        >
           ƯU ĐÃI
         </Link>
-        <Link href="/instruct" className="font-bold">
+        <Link
+          href="/instruct"
+          className="font-bold px-4 py-2 flex items-center justify-center h-full"
+        >
           HƯỚNG DẪN
         </Link>
-        <Link href="#" className="font-bold">
+        <Link
+          href="#"
+          className="font-bold px-4 py-2 flex items-center justify-center h-full"
+        >
           HỆ THỐNG CỬA HÀNG
         </Link>
       </nav>

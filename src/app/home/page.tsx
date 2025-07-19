@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import "../globals.css";
 import MyCarousel from "@/app/components/MyCarousel";
 import { useRouter } from "next/navigation";
-import { products } from "@/lib/data/product";
+import { rackets } from "@/lib/data/product";
 export default function HomePage() {
   const [, setCurrentIndex] = useState(0);
   const totalItems = 3; 
@@ -33,7 +33,7 @@ export default function HomePage() {
             </a>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {products.map((item) => {
+            {rackets.map((item) => {
               const discountPercent = item.discount
                 ? parseFloat(item.discount.replace("%", "").replace("-", "")) /
                   100
@@ -41,7 +41,7 @@ export default function HomePage() {
 
               const price = item.oldPrice
                 ? Math.round(item.oldPrice * (1 - discountPercent))
-                : item.price; 
+                : item.oldPrice; 
 
               return (
                 <div
