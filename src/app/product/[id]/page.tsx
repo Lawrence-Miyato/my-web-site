@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
-import { CartItem, allProducts } from "@/lib/data/product";
+import { CartItem, allProducts, promotions } from "@/lib/data/product";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -71,6 +71,29 @@ export default function ProductDetail() {
           </div>
 
           <p>{product.describe}</p>
+          <section className="my-10">
+            <h2 className="text-2xl font-bold text-blue-800 mb-6">
+              🎉 Chương trình khuyến mãi
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {promotions.map((promo) => (
+                <div
+                  key={promo.id}
+                  className="bg-white shadow rounded-lg overflow-hidden hover:shadow-xl transition"
+                >
+                  <div className="p-4 text-black">
+                    <h3 className="font-semibold text-lg mb-2">
+                      {promo.title}
+                    </h3>
+                    <p className="text-sm mb-2">{promo.description}</p>
+                    <p className="text-xs text-red-500 font-medium">
+                      ⏰ Hạn đến: {promo.validUntil}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
 
           <div className="flex items-center gap-4 mt-6">
             <div className="flex border border-gray-300 rounded overflow-hidden">
