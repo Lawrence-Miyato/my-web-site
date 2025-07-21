@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import Login_Buton from "@/app/components/login";
 import { useEffect, useState } from "react";
+import { allProducts } from "@/lib/data/product";
+import { useRouter } from "next/navigation";
 
 interface CartItem {
   id: number;
@@ -17,6 +19,25 @@ interface CartItem {
 export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filtered, setFiltered] = useState(allProducts);
+  const router = useRouter();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value.toLowerCase();
+    setSearchTerm(keyword);
+
+    const filteredList = allProducts.filter((item) =>
+      item.name.toLowerCase().includes(keyword)
+    );
+
+    setFiltered(filteredList);
+  };
+
+  const handleClickProduct = (id: number) => {
+    setSearchTerm(""); // clear search input
+    router.push(`/product/${id}`);
+  };
 
   useEffect(() => {
     setMounted(true); // Tránh hydration mismatch
@@ -59,30 +80,65 @@ export default function Header() {
             <option className="text-black">Vợt Cầu Lông</option>
           </select>
 
-          <div className="bg-lime-300 p-1 rounded-full w-full max-w-md mx-auto">
-            <div className="flex items-center bg-white rounded-full shadow px-2 py-1">
-              <input
-                type="text"
-                placeholder="Tìm sản phẩm ..."
-                className="flex-grow bg-transparent outline-none text-gray-700"
-              />
-              <button>
-                <svg
-                  className="w-5 h-5 text-black hover:text-blue-500 transition"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
-                  />
-                </svg>
-              </button>
+          <div className="relative w-full max-w-md mx-auto">
+            {/* Search Input */}
+            <div className="bg-lime-300 p-1 rounded-full w-full">
+              <div className="flex items-center bg-white rounded-full shadow px-2 py-1">
+                <input
+                  type="text"
+                  placeholder="Tìm sản phẩm ..."
+                  value={searchTerm}
+                  onChange={handleSearch}
+                  className="flex-grow bg-transparent outline-none text-gray-700"
+                />
+                <button>
+                  <svg
+                    className="w-5 h-5 text-black hover:text-blue-500 transition"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
+
+            {/* Search Result (Dropdown style) */}
+            {searchTerm && (
+              <div className="absolute z-50 top-full mt-2 left-0 right-0 bg-white rounded-lg shadow-lg max-h-64 overflow-y-auto">
+                {filtered.length > 0 ? (
+                  filtered.map((product) => (
+                    <div
+                      key={product.id}
+                      onClick={() => handleClickProduct(product.id)}
+                      className="flex items-center gap-2 p-2 hover:bg-gray-100 border-b"
+                    >
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={40}
+                        height={40}
+                        className="rounded"
+                      />
+                      <span className="text-sm text-gray-800">
+                        {product.name}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-gray-500 text-sm p-2">
+                    Không tìm thấy sản phẩm nào 😢
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
