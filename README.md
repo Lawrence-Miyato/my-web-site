@@ -48,5 +48,3 @@ What import alias would you like configured?	@/*
 # 🎯 Vị trí lưu Fake Data
 
     src/lib/data/product.tsx
-# 💡 Sau khi clone code thì hãy chạy lệnh để cài toàn bộ thư viện hiện có
-    npm i
