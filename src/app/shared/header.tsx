@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import Login_Buton from "@/app/components/login";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { allProducts } from "@/lib/data/product";
 import { useRouter } from "next/navigation";
 
@@ -22,6 +22,9 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filtered, setFiltered] = useState(allProducts);
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value.toLowerCase();
@@ -59,6 +62,24 @@ export default function Header() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <header className="bg-blue-600 text-white flex justify-around items-center py-2">
@@ -85,12 +106,15 @@ export default function Header() {
             <div className="bg-lime-300 p-1 rounded-full w-full">
               <div className="flex items-center bg-white rounded-full shadow px-2 py-1">
                 <input
+                  ref={inputRef}
                   type="text"
                   placeholder="Tìm sản phẩm ..."
                   value={searchTerm}
                   onChange={handleSearch}
+                  onFocus={() => setShowDropdown(true)}
                   className="flex-grow bg-transparent outline-none text-gray-700"
                 />
+
                 <button>
                   <svg
                     className="w-5 h-5 text-black hover:text-blue-500 transition"
@@ -111,8 +135,11 @@ export default function Header() {
             </div>
 
             {/* Search Result (Dropdown style) */}
-            {searchTerm && (
-              <div className="absolute z-50 top-full mt-2 left-0 right-0 bg-white rounded-lg shadow-lg max-h-64 overflow-y-auto">
+            {searchTerm && showDropdown && (
+              <div
+                ref={dropdownRef}
+                className="absolute z-50 top-full mt-2 left-0 right-0 bg-white rounded-lg shadow-lg max-h-64 overflow-y-auto"
+              >
                 {filtered.length > 0 ? (
                   filtered.map((product) => (
                     <div
