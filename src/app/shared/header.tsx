@@ -96,13 +96,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <select className="p-1 rounded border border-double border-black bg-white text-black">
-            <option className="text-black">Tất cả</option>
-            <option className="text-black">Vợt Cầu Lông</option>
-          </select>
-
           <div className="relative w-full max-w-md mx-auto">
-            {/* Search Input */}
             <div className="bg-lime-300 p-1 rounded-full w-full">
               <div className="flex items-center bg-white rounded-full shadow px-2 py-1">
                 <input
@@ -134,7 +128,6 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Search Result (Dropdown style) */}
             {searchTerm && showDropdown && (
               <div
                 ref={dropdownRef}
